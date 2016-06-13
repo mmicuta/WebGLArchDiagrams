@@ -6,11 +6,11 @@ var canvasHeight = canvasWidth/1.618;
 //alert($container.innerWidth());
             
 var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera( 45, canvasWidth/canvasHeight, 0.1, 1000 );
+var camera = new THREE.PerspectiveCamera( 45, canvasWidth/canvasHeight, 0.1, 10000 );
 
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( canvasWidth, canvasHeight );
-renderer.setClearColor( 0xffffff );
+renderer.setClearColor( 0xffff00 );
 
 $container.append( renderer.domElement );
 
@@ -19,21 +19,23 @@ $container.append( renderer.domElement );
 //var cube = new THREE.Mesh( geometry, material );
 //scene.add( cube );
 
+// instantiate load manager
+var manager = new THREE.LoadingManager();
+manager.onProgress = function ( item, loaded, total ) {
+
+	console.log( item, loaded, total );
+
+};
 
 // instantiate a loader
-var loader = new THREE.ObjectLoader();
-
-// load a resource
-loader = new THREE.JSONLoader();
-loader.load('data/data.json'});
-
-loader.parse
-
-//http://www.yienandmarc.net/js/data.json
-//http://www.yienandmarc.net/js/cartest.js
+var loader = new THREE.OBJLoader( manager );
+loader.load('data/ArchMassMeters2.obj', function(object) {
+  scene.add(object);
+});
 
 
-camera.position.set = ( 0, 100, 300 );
+
+camera.position.z = 100;
 
 var render = function () {
     requestAnimationFrame( render );
